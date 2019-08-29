@@ -118,7 +118,7 @@ class Slots {
         const emojiRowsAsStrings = [];
 
         // Ensure an n x n matrix
-        const numberOfRowsToGenerate = 4;
+        const numberOfRowsToGenerate = 3;
         const numberOfItemsInRow = numberOfRowsToGenerate;
 
         while (emojiRowsAsArrays.length < numberOfRowsToGenerate) {

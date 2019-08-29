@@ -25,9 +25,10 @@ client.on('message', msg => {
     }
 
     if (msg.content.startsWith('!slots')) {
-        const wager = msg.content.split(" ")[1];
+        var wager = msg.content.split(" ")[1];
         var wagerIsValid = wager === undefined ? false : !Number.isNaN(Number(wager));
         let userHasFunds = false;
+        wager = parseInt(Number(wager));
 
         if (userPoints.points <= 0 || wager > userPoints.points) {
             msg.channel.send("You do not have enough funds to play this game. Current Total: " + userPoints.points);
