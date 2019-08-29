@@ -67,11 +67,10 @@ client.on('message', msg => {
         msg.channel.send(`${username} has ${userPoints.points} total`);
     }
 
-    if (msg.content.startsWith('!reup') && isSpencer) {
-        const userToGift = msg.content.split(" ")[1];
-        const giftAmount = msg.content.split(" ")[2];
-
-        msg.channel.send(`${userToGift} has been given ${giftAmount} by ${username} and now has a total of ${userPoints.points + giftAmount}.`);
+    if (msg.content.startsWith('!reup')) {
+        userPoints.points = 5000;
+        FileHelper.writeFileToUserPoints(userPoints, username);
+        msg.channel.send(`${username}'s points have been reset to ${userPoints.points}.`);
     }
 });
 
