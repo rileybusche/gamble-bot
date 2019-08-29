@@ -12,6 +12,7 @@ client.on('ready', () => {
 client.on('message', msg => {
     const username = DiscordHelper.getUsername(msg, client);
     let userPoints = FileHelper.readFileFromUserPoints(username);
+    const isSpencer = username === 'PoshPrincess7' ? true : false;
 
     if (userPoints === null) {
         userPoints = {
@@ -64,6 +65,13 @@ client.on('message', msg => {
 
     if (msg.content === '!points') {
         msg.channel.send(`${username} has ${userPoints.points} total`);
+    }
+
+    if (msg.content.startsWith('!reup') && isSpencer) {
+        const userToGift = msg.content.split(" ")[1];
+        const giftAmount = msg.content.split(" ")[2];
+
+        msg.channel.send(`${userToGift} has been given ${giftAmount} by ${username} and now has a total of ${userPoints.points + giftAmount}.`);
     }
 });
 
