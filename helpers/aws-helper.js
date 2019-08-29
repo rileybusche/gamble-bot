@@ -2,15 +2,15 @@ const AWS = require('aws-sdk');
 const fs = require('fs');
 
 class AWSHelper {
-    static upload() {
+    static upload(username, jsonString) {
         // Set the region 
-        AWS.config.update({ region: 'REGION' });
+        AWS.config.update({ region: 'us-east-2' });
 
         // Create S3 service object
         s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 
         // call S3 to retrieve upload file to specified bucket
-        var uploadParams = { Bucket: process.argv[2], Key: '', Body: '' };
+        var uploadParams = { Bucket: "gamble-bot", Key: `${username}`, Body: jsonString };
         var file = process.argv[3];
 
         // Configure the file stream and obtain the upload parameters

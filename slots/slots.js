@@ -68,7 +68,7 @@ class Slots {
         return diagonal;
     }
 
-    static calculateWinnings(slotsGame, numberOfRows, username) {
+    static calculateWinnings(slotsGame, numberOfRows, wager) {
         let points = 0;
         let playerCurrency = {
             points: 0,
@@ -79,7 +79,7 @@ class Slots {
             const isEachItemInRowEqual = this.checkIfAllInArrayAreSame(slotsGameRow);
 
             if (isEachItemInRowEqual) {
-                points += 100;
+                points += 2;
             }
         }
 
@@ -88,7 +88,7 @@ class Slots {
             const isEachItemInColumnEqual = this.checkIfAllInArrayAreSame(column);
 
             if (isEachItemInColumnEqual) {
-                points += 100;
+                points += 2;
             }
         }
 
@@ -96,15 +96,16 @@ class Slots {
         const isEachItemInNegativeSlopeDiagonalEqual = this.checkIfAllInArrayAreSame(negativeSlopeDiagonal);
 
         if (isEachItemInNegativeSlopeDiagonalEqual) {
-            points += 200;
+            points += 5;
         }
 
         const positiveSlopeDiagonal = this.getPositiveSlopeDiagonal(slotsGame);
         const isEachItemInPositiveSlopeDiagonalEqual = this.checkIfAllInArrayAreSame(positiveSlopeDiagonal);
 
         if (isEachItemInPositiveSlopeDiagonalEqual) {
-            points += 200;
+            points += 5;
         }
+        points = points * wager;
 
         playerCurrency.points += points;
         playerCurrency.pointsWon = points;
@@ -112,7 +113,7 @@ class Slots {
         return playerCurrency;
     }
 
-    static play(username, userPoints) {
+    static play(username, userPoints, wager) {
         const emojiRowsAsArrays = [];
         const emojiRowsAsStrings = [];
 
@@ -126,15 +127,17 @@ class Slots {
             emojiRowsAsStrings.push(emojiRow.join("") + "\n");
         }
 
-        const playerCurrency = this.calculateWinnings(emojiRowsAsArrays, numberOfRowsToGenerate, username);
+        const playerCurrency = this.calculateWinnings(emojiRowsAsArrays, numberOfRowsToGenerate, wager);
 
         const pointsWon = playerCurrency.pointsWon;
-        const message = pointsWon > 0 ? `${username} has won ` + pointsWon + ` points and now has ${userPoints.points + pointsWon} points total!` : `${username} is a loser and has ${userPoints.points} points total.`;
+        const isWinner = pointsWon > 0 ? true : false;
+        const message = isWinner ? `${username} has won ` + pointsWon + ` points and now has ${userPoints.points + pointsWon} points total!` : `${username} is a loser! Old Total: ${userPoints.points} points; New Total: ${userPoints.points - wager}`;
 
         const results = {
             "game": emojiRowsAsStrings.join(""),
             "message": message,
-            "pointsWon": pointsWon
+            "pointsWon": pointsWon,
+            "isWinner": isWinner
         };
 
         return results;
