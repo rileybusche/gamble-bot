@@ -68,10 +68,16 @@ client.on('message', msg => {
         msg.channel.send(`${username} has ${userPoints.points} total`);
     }
 
-    if (msg.content.startsWith('!reup')) {
-        userPoints.points = 5000;
-        FileHelper.writeFileToUserPoints(userPoints, username);
-        msg.channel.send(`${username}'s points have been reset to ${userPoints.points}.`);
+    if (msg.content === '!dailyPoints') {
+        if (userPoints.lastDailyPoints === undefined || userPoints.lastDailyPoints !== new Date().setHours(0, 0, 0, 0)) {
+            userPoints.points = userPoints.points + 500;
+            userPoints.lastDailyPoints = new Date().setHours(0, 0, 0, 0);
+            console.log("Last daily points: " + userPoints.lastDailyPoints);
+            FileHelper.writeFileToUserPoints(userPoints, username);
+            msg.channel.send(`${username}'s daily points have been added!  Old Points: ${userPoints.points - 500}; Cureent Total: ${userPoints.points}`);
+        } else {
+            msg.channel.send(`${username}, you have already claimed your daily points.  Try again tomorrow.`);
+        }
     }
 });
 
