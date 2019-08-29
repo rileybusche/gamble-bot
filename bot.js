@@ -25,7 +25,7 @@ client.on('message', msg => {
 
     if (msg.content.startsWith('!slots')) {
         const wager = msg.content.split(" ")[1];
-        var wagerIsValid = wager === undefined ? false : !Number.isNaN(parseInt(wager));
+        var wagerIsValid = wager === undefined ? false : !Number.isNaN(Number(wager));
         let userHasFunds = false;
 
         if (userPoints.points <= 0 || wager > userPoints.points) {
