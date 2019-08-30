@@ -87,8 +87,8 @@ client.on('message', msg => {
         if (sendMessage) {
             msg.channel.send(message);
         } else {
-            PointsHelper.addPoints(pointsToGive, userPointsToGiveTo);
-            msg.channel.send('Successfully added points!');
+            FileHelper.writeFileToUserPoints(PointsHelper.addPoints(pointsToGive, userPointsToGiveTo));
+            msg.channel.send(`Successfully added ${pointsToGive} points!`);
         }
     }
 });
