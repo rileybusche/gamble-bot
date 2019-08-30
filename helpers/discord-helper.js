@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const FileHelper = require('./file-helper');
 
 class DiscordHelper {
     static getUsername(msg, client) {
@@ -11,6 +12,17 @@ class DiscordHelper {
         }
 
         return client.users.get(user).username;
+    }
+
+    static createNewUser(msg, username) {
+        msg.channel.send(`Welcome, ${username}! I have started you at 5000 points.`);
+        const userPoints = {
+            username: username,
+            points: 5000
+        };
+        FileHelper.writeFileToUserPoints(userPoints, username);
+
+        return userPoints;
     }
 }
 
