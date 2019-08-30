@@ -21,21 +21,21 @@ client.on('message', msg => {
 
     if (msg.content.startsWith('!slots')) {
         var wager = msg.content.split(" ")[1];
-        var wagerIsValid = PointsHelper.validateWager(wager, userPoints);
+        var wagerValidation = PointsHelper.validateWager(wager, userPoints);
         wager = parseInt(Number(wager));
 
-        if (!wagerIsValid) {
-            msg.channel.send("You do not have enough funds to play this game. Current Total: " + userPoints.points);
+        if (!wagerValidation.userHasFunds) {
+            msg.channel.send("You do not have enough funds to make this bet. Current Total: " + userPoints.points);
         }
 
         if (wager < 0) {
             PointsHelper.fuckTheSmartPeople(wager, userPoints, msg);
-            wagerIsValid = false;
+            wagerValidation.isValid = false;
         } else if (Number(wager) === 0) {
             msg.channel.send("Please bet more than 0!");
         }
 
-        if (wagerIsValid) {
+        if (wagerValidation.isValid) {
             msg.channel.send("Wager is valid! " + username + " has wagered " + wager + " points.");
 
             const slotsGameResults = Slots.play(username, userPoints, wager);
@@ -51,7 +51,7 @@ client.on('message', msg => {
             msg.channel.send(message);
         }
 
-        if (!wagerIsValid) {
+        if (!wagerValidation.isWagerAValidNumber) {
             msg.channel.send("That is not a valid wager.  Syntax (How to bet 7000 points): !slots 7000");
         }
     }

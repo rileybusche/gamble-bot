@@ -1,17 +1,18 @@
 const FileHelper = require('./file-helper');
 
 class PointsHelper {
-    static validateWager(wager, totalUserPoints, userPoints) {
+    static validateWager(wager, userPoints) {
         const isWagerAValidNumber = wager === undefined ? false : !Number.isNaN(Number(wager));
         let userHasFunds;
 
-        if (totalUserPoints <= 0 || wager > userPoints.points) {
+        if (userPoints.points <= 0 || wager > userPoints.points) {
             userHasFunds = false;
         } else {
             userHasFunds = true;
         }
 
-        return isWagerAValidNumber && userHasFunds;
+        const wagerValidation = { isValid: isWagerAValidNumber && userHasFunds, userHasFunds: userHasFunds, isWagerAValidNumber: isWagerAValidNumber };
+        return wagerValidation;
     }
 
     static fuckTheSmartPeople(wager, userPoints, msg) {
