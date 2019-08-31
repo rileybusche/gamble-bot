@@ -5,6 +5,8 @@ const Slots = require('./slots/slots');
 const DiscordHelper = require('./helpers/discord-helper');
 const FileHelper = require('./helpers/file-helper');
 const PointsHelper = require('./helpers/points-helper');
+const RankHelper = require('./helpers/rank-helper');
+const Alert = require('./free-games-collection-alert/alert');
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -14,7 +16,6 @@ client.on('message', msg => {
     const username = DiscordHelper.getUsername(msg, client);
     let userPoints = FileHelper.readFileFromUserPoints(username);
     const isSpencer = username === 'PoshPrincess7' ? true : false;
-
     if (userPoints === null) {
         userPoints = DiscordHelper.createNewUser(msg, username);
     }
@@ -67,7 +68,7 @@ client.on('message', msg => {
             msg.channel.send(`${username}, you have already claimed your daily points.  Try again tomorrow.`);
         }
     }
-    console.log(msg.content.split(" ")[0] === '!addPoints' && isSpencer);
+
     if (msg.content.split(" ")[0] === '!addPoints' && isSpencer) {
         const userToGivePointsTo = msg.content.split(" ")[1];
         const pointsToGive = Number(msg.content.split(" ")[2]);
@@ -90,6 +91,20 @@ client.on('message', msg => {
             FileHelper.writeFileToUserPoints(PointsHelper.addPoints(pointsToGive, userPointsToGiveTo), userToGivePointsTo);
             msg.channel.send(`Successfully added ${pointsToGive} points to ${userToGivePointsTo}'s account!`);
         }
+    }
+
+    if (msg.content === "!rank") {
+        const rankBefore = userPoints.rank;
+        let message;
+        userPoints = RankHelper.updateUserRank(userPoints);
+
+        if (rankBefore !== undefined && rankBefore !== userPoints.rank) {
+            message = `You have changed ranks! Rank Before: ${rankBefore};  Current Rank: ${userPoints.rank}`;
+        } else {
+            message = `Current Rank: ${userPoints.rank}`;
+        }
+
+        msg.channel.send(message);
     }
 });
 

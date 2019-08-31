@@ -21,6 +21,16 @@ class FileHelper {
             return null;
         }
     }
+
+    static readFile(filePath) {
+        filePath = __dirname + filePath;
+
+        try {
+            return JSON.parse(fs.readFileSync(filePath, { encoding: 'utf-8' }));
+        } catch (err) {
+            return null;
+        }
+    }
 }
 
 module.exports = FileHelper;
