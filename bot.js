@@ -21,40 +21,7 @@ client.on('message', msg => {
     }
 
     if (msg.content.startsWith('!slots')) {
-        var wager = msg.content.split(" ")[1];
-        var wagerValidation = PointsHelper.validateWager(wager, userPoints);
-        wager = parseInt(Number(wager));
-
-        if (!wagerValidation.userHasFunds) {
-            msg.channel.send("You do not have enough funds to make this bet. Current Total: " + userPoints.points);
-        }
-
-        if (wager < 0) {
-            PointsHelper.fuckTheSmartPeople(wager, userPoints, msg);
-            wagerValidation.isValid = false;
-        } else if (Number(wager) === 0) {
-            msg.channel.send("Please bet more than 0!");
-        }
-
-        if (wagerValidation.isValid) {
-            msg.channel.send("Wager is valid! " + username + " has wagered " + wager + " points.");
-
-            const slotsGameResults = Slots.play(username, userPoints, wager);
-            const message = `Points ${slotsGameResults.isWinner ? "Earned" : "Lost"}: ${slotsGameResults.isWinner ? slotsGameResults.pointsWon : wager}` + "\n" + slotsGameResults.game + "\n" + slotsGameResults.message;
-
-            if (slotsGameResults.isWinner) {
-                userPoints = PointsHelper.addPoints(slotsGameResults.pointsWon, userPoints);
-            } else {
-                userPoints = PointsHelper.removePoints(wager, userPoints);
-            }
-
-            FileHelper.writeFileToUserPoints(userPoints, username);
-            msg.channel.send(message);
-        }
-
-        if (!wagerValidation.isWagerAValidNumber) {
-            msg.channel.send("That is not a valid wager.  Syntax (How to bet 7000 points): !slots 7000");
-        }
+        Slots.startSlots(msg, userPoints);
     }
 
     if (msg.content === '!points') {
