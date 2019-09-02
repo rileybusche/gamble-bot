@@ -75,18 +75,7 @@ client.on('message', msg => {
         }
 
         if (msg.content === "!rank") {
-            const rankBefore = userPoints.rank;
-            let message;
-            userPoints = RankHelper.updateUserRank(userPoints);
-
-            if (rankBefore !== undefined && rankBefore !== userPoints.rank) {
-                message = `You have changed ranks!\nRank Before: ${rankBefore}\nCurrent Rank: ${userPoints.rank}`;
-                userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userPoints);
-                FileHelper.writeFile(userPointsList, userPointsFilePath);
-            } else {
-                message = `Current Rank: ${userPoints.rank}`;
-            }
-
+            const message = RankHelper.rank(userPointsList, userPoints);
             msg.channel.send(message);
         }
 

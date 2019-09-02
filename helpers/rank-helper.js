@@ -1,6 +1,7 @@
 const FileHelper = require('./file-helper');
 const userPointsFilePath = '/../userPoints.json';
 const rankDictionaryFilePath = '/../rank-dictionary.json';
+const PointsHelper = require('./points-helper');
 
 class RankHelper {
     static updateUserRank(userPoints) {
@@ -33,6 +34,22 @@ class RankHelper {
             const currentUser = sortedUserPointsList[i];
             const rank = i + 1;
             message = `${message}${rank}. ${currentUser.username} - ${currentUser.points}\n`;
+        }
+
+        return message;
+    }
+
+    static rank(userPointsList, userPoints) {
+        const rankBefore = userPoints.rank;
+        let message;
+        userPoints = this.updateUserRank(userPoints);
+
+        if (rankBefore !== undefined && rankBefore !== userPoints.rank) {
+            message = `You have changed ranks!\nRank Before: ${rankBefore}\nCurrent Rank: ${userPoints.rank}`;
+            userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userPoints);
+            FileHelper.writeFile(userPointsList, userPointsFilePath);
+        } else {
+            message = `Current Rank: ${userPoints.rank}`;
         }
 
         return message;
