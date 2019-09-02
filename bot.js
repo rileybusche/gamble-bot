@@ -89,6 +89,12 @@ client.on('message', msg => {
             msg.channel.send(message);
         }
 
+        if (msg.content === "!rankAll") {
+            const sortedUserPointsList = PointsHelper.sortUserPointsListByPoints(userPointsList);
+            const message = RankHelper.createUserPointsRankingMessage(sortedUserPointsList);
+            msg.channel.send(message);
+        }
+
         if (msg.content.startsWith("!gift")) {
             const userToGivePointsTo = msg.content.split(" ")[1];
             const pointsToGive = Number(msg.content.split(" ")[2]);

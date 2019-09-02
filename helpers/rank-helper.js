@@ -25,6 +25,18 @@ class RankHelper {
 
         return userPoints;
     }
+
+    static createUserPointsRankingMessage(sortedUserPointsList) {
+        let message = 'Rankings:\n';
+
+        for (let i = 0; i < sortedUserPointsList.length; i++) {
+            const currentUser = sortedUserPointsList[i];
+            const rank = i + 1;
+            message = `${message}${rank}. ${currentUser.username} - ${currentUser.points}\n`;
+        }
+
+        return message;
+    }
 }
 
 module.exports = RankHelper;

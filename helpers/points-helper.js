@@ -71,6 +71,10 @@ class PointsHelper {
 
         return userPointsList;
     }
+
+    static sortUserPointsListByPoints(userPointsList) {
+        return userPointsList.sort((userPoints1, userPoints2) => userPoints2.points - userPoints1.points);
+    }
 }
 
 module.exports = PointsHelper;
