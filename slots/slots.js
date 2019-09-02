@@ -170,7 +170,7 @@ class Slots {
             const message = `Points ${slotsGameResults.isWinner ? "Earned" : "Lost"}: ${slotsGameResults.isWinner ? slotsGameResults.pointsWon : wager}` + "\n" + slotsGameResults.game + "\n" + slotsGameResults.message;
 
             if (slotsGameResults.isWinner) {
-                userPoints = PointsHelper.addPoints(slotsGameResults.pointsWon, userPoints);
+                userPoints = PointsHelper.addPointsToUserPoints(slotsGameResults.pointsWon, userPoints);
             } else {
                 userPoints = PointsHelper.removePoints(wager, userPoints);
             }

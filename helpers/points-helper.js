@@ -38,7 +38,7 @@ class PointsHelper {
         return userPoints;
     }
 
-    static addPoints(pointsWon, userPoints) {
+    static addPointsToUserPoints(pointsWon, userPoints) {
         userPoints.points += pointsWon;
         return userPoints;
     }
@@ -91,13 +91,36 @@ class PointsHelper {
         if (sendMessage) {
             msg.channel.send(message);
         } else {
-            userPointsToGiveTo = this.addPoints(pointsToGive, userPointsToGiveTo);
+            userPointsToGiveTo = this.addPointsToUserPoints(pointsToGive, userPointsToGiveTo);
             userPointsList = this.updateUserPointsInUserPointsList(userPointsList, userPointsToGiveTo);
             userToDeductFrom = this.findUserInUserPointsList(userPointsList, usernameToDeductFrom);
             userToDeductFrom = this.removePoints(pointsToGive, userToDeductFrom);
             userPointsList = this.updateUserPointsInUserPointsList(userPointsList, userToDeductFrom);
             FileHelper.writeFile(userPointsList, userPointsFilePath);
             msg.channel.send(`Successfully added ${pointsToGive} points to ${userPointsToGiveTo.username}'s account from ${usernameToDeductFrom}!\n${userPointsToGiveTo.username} now has ${userPointsToGiveTo.points} points.\n${usernameToDeductFrom} now has ${userToDeductFrom.points} points.`);
+        }
+    }
+
+    static addPoints(msg, pointsToGive, userPointsToGiveTo, userPointsList) {
+        let message, sendMessage;
+
+        if (Number.isNaN(pointsToGive)) {
+            message = `${pointsToGive} is not a valid number.\n`;
+            sendMessage = true;
+        }
+
+        if (userPointsToGiveTo === null || userPointsToGiveTo === undefined) {
+            message = message !== undefined ? `${message}${userToGivePointsTo} is not a valid username.` : `${userToGivePointsTo} is not a valid username.`;
+            sendMessage = true;
+        }
+
+        if (sendMessage) {
+            msg.channel.send(message);
+        } else {
+            userPointsToGiveTo = this.addPointsToUserPoints(pointsToGive, userPointsToGiveTo);
+            userPointsList = this.updateUserPointsInUserPointsList(userPointsList, userPointsToGiveTo);
+            FileHelper.writeFile(userPointsList, userPointsFilePath);
+            msg.channel.send(`Successfully added ${pointsToGive} points to ${userPointsToGiveTo.username}'s account!`);
         }
     }
 }

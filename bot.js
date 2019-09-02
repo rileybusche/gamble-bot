@@ -52,26 +52,7 @@ client.on('message', msg => {
             const userToGivePointsTo = msg.content.split(" ")[1];
             const pointsToGive = Number(msg.content.split(" ")[2]);
             const userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, userToGivePointsTo);
-            let message, sendMessage;
-
-            if (Number.isNaN(pointsToGive)) {
-                message = `${pointsToGive} is not a valid number.\n`;
-                sendMessage = true;
-            }
-
-            if (userPointsToGiveTo === null || userPointsToGiveTo === undefined) {
-                message = message !== undefined ? `${message}${userToGivePointsTo} is not a valid username.` : `${userToGivePointsTo} is not a valid username.`;
-                sendMessage = true;
-            }
-
-            if (sendMessage) {
-                msg.channel.send(message);
-            } else {
-                userPoints = PointsHelper.addPoints(pointsToGive, userPointsToGiveTo);
-                userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userPoints);
-                FileHelper.writeFile(userPointsList, userPointsFilePath);
-                msg.channel.send(`Successfully added ${pointsToGive} points to ${userToGivePointsTo}'s account!`);
-            }
+            PointsHelper.addPoints(msg, pointsToGive, userPointsToGiveTo, userPointsList);
         }
 
         if (msg.content === "!rank") {
