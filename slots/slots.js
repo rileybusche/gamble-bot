@@ -1,6 +1,7 @@
 const emojisMap = require('../emoji-map.json').emojis;
 const PointsHelper = require('../helpers/points-helper');
 const FileHelper = require('../helpers/file-helper');
+const userPointsFilePath = '/../userPoints.json';
 
 class Slots {
     static getEmojiMap() {
@@ -174,13 +175,14 @@ class Slots {
                 userPoints = PointsHelper.removePoints(wager, userPoints);
             }
 
-            FileHelper.writeFileToUserPoints(userPoints, username);
             msg.channel.send(message);
         }
 
         if (!wagerValidation.isWagerAValidNumber) {
             msg.channel.send("That is not a valid wager.  Syntax (How to bet 7000 points): !slots 7000");
         }
+
+        return userPoints;
     }
 }
 

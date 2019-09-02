@@ -1,4 +1,6 @@
 const FileHelper = require('./file-helper');
+const userPointsFilePath = '/../userPoints.json';
+const _ = require('lodash');
 
 class PointsHelper {
     static validateWager(wager, userPoints) {
@@ -18,17 +20,17 @@ class PointsHelper {
     static fuckTheSmartPeople(wager, userPoints, msg) {
         const pointsToRemove = 10 * wager;
         userPoints.points = userPoints.points + pointsToRemove;
-        FileHelper.writeFileToUserPoints(userPoints);
         const oldTotal = userPoints.points - pointsToRemove;
         msg.channel.send("I have removed " + pointsToRemove + " points from your account for being a bad boy.  Old Total: " + oldTotal + "; Current Points: " + userPoints.points);
+        return userPoints;
     }
 
     static addDailyPoints(userPoints, msg) {
         const username = userPoints.username;
         userPoints.points = userPoints.points + 500;
         userPoints.lastDailyPoints = new Date().setHours(0, 0, 0, 0);
-        FileHelper.writeFileToUserPoints(userPoints, username);
         msg.channel.send(`${username}'s daily points have been added!  Old Points: ${userPoints.points - 500}; Cureent Total: ${userPoints.points}`);
+        return userPoints;
     }
 
     static removePoints(wager, userPoints) {
@@ -39,6 +41,35 @@ class PointsHelper {
     static addPoints(pointsWon, userPoints) {
         userPoints.points += pointsWon;
         return userPoints;
+    }
+
+    static createUserPointsFile(userPointsFilePath) {
+        let userPointsList = [];
+        userPointsList = FileHelper.writeFile(userPointsList, userPointsFilePath);
+
+        if (userPointsList !== undefined) {
+            console.log("Initial UserPoints.json file was successfully created.");
+        } else {
+            console.log("Error creating initial UserPoints.json file.");
+        }
+
+        return userPointsList;
+    }
+
+    static findUserInUserPointsList(userPointsList, username) {
+        return userPointsList.filter(userPoints => userPoints.username === username)[0];
+    }
+
+    static updateUserPointsInUserPointsList(userPointsList, userPoints) {
+        const userPointsIndex = userPointsList.findIndex(userPointsItem => _.isEqual(userPoints, userPointsItem));
+
+        if (userPointsIndex >= 0) {
+            userPointsList[userPointsIndex] = userPoints;
+        } else {
+            userPointsList.push(userPoints);
+        }
+
+        return userPointsList;
     }
 }
 

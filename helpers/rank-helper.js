@@ -1,15 +1,15 @@
 const FileHelper = require('./file-helper');
+const userPointsFilePath = '/../userPoints.json';
+const rankDictionaryFilePath = '/../rank-dictionary.json';
 
 class RankHelper {
     static updateUserRank(userPoints) {
         userPoints = this.calculateUserRank(userPoints);
-        FileHelper.writeFileToUserPoints(userPoints, userPoints.username);
         return userPoints;
     }
 
     static calculateUserRank(userPoints) {
-        const filePath = '/../rank-dictionary.json';
-        const userPointsRankDictionary = FileHelper.readFile(filePath);
+        const userPointsRankDictionary = FileHelper.readFile(rankDictionaryFilePath);
 
         const keys = Object.keys(userPointsRankDictionary);
         for (let key of keys) {

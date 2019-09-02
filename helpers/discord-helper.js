@@ -14,13 +14,15 @@ class DiscordHelper {
         return client.users.get(user).username;
     }
 
-    static createNewUser(msg, username) {
+    static createNewUser(msg, username, userPointsFilePath, userPointsList) {
         msg.channel.send(`Welcome, ${username}! I have started you at 5000 points.`);
-        const userPoints = {
+        let userPoints = {
             username: username,
             points: 5000
         };
-        FileHelper.writeFileToUserPoints(userPoints, username);
+
+        userPointsList.push(userPoints);
+        FileHelper.writeFile(userPointsList, userPointsFilePath);
 
         return userPoints;
     }
