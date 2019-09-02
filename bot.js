@@ -54,7 +54,7 @@ client.on('message', msg => {
             let message, sendMessage;
 
             if (Number.isNaN(pointsToGive)) {
-                message = 'Points is not a valid number.\n';
+                message = `${pointsToGive} is not a valid number.\n`;
                 sendMessage = true;
             }
 
@@ -96,7 +96,7 @@ client.on('message', msg => {
             let message, sendMessage, userToDeductFrom;
 
             if (Number.isNaN(pointsToGive)) {
-                message = 'Points is not a valid number.\n';
+                message = `${pointsToGive} is not a valid number.\n`;
                 sendMessage = true;
             }
 
