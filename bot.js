@@ -101,7 +101,7 @@ client.on('message', msg => {
             }
 
             if (userPointsToGiveTo === null || userPointsToGiveTo === undefined) {
-                message = message + 'Username is not valid.';
+                message = message !== undefined ? `${message}${userToGivePointsTo} is not a valid username.` : `${userToGivePointsTo} is not a valid username.`;
                 sendMessage = true;
             }
 
