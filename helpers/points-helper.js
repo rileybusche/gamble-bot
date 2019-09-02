@@ -29,7 +29,7 @@ class PointsHelper {
         const username = userPoints.username;
         userPoints.points = userPoints.points + 500;
         userPoints.lastDailyPoints = new Date().setHours(0, 0, 0, 0);
-        msg.channel.send(`${username}'s daily points have been added!  Old Points: ${userPoints.points - 500}; Cureent Total: ${userPoints.points}`);
+        msg.channel.send(`${username}'s daily points have been added!\nOld Points: ${userPoints.points - 500}\nCurrent Total: ${userPoints.points}`);
         return userPoints;
     }
 
