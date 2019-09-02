@@ -19,7 +19,7 @@ client.on('ready', () => {
 client.on('message', msg => {
     const username = DiscordHelper.getUsername(msg, client);
 
-    if (username !== 'gamble-bot') {
+    if (username !== 'gamble-bot' && msg.content.startsWith("!")) {
         let userPointsList = FileHelper.readFile(userPointsFilePath);
         let userPoints = PointsHelper.findUserInUserPointsList(userPointsList, username);
         const isSpencer = username === 'PoshPrincess7' ? true : false;
