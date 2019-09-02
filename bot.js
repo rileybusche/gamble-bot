@@ -50,7 +50,7 @@ client.on('message', msg => {
         if (msg.content.split(" ")[0] === '!addPoints' && isSpencer) {
             const userToGivePointsTo = msg.content.split(" ")[1];
             const pointsToGive = Number(msg.content.split(" ")[2]);
-            const userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userToGivePointsTo);
+            const userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, userToGivePointsTo);
             let message, sendMessage;
 
             if (Number.isNaN(pointsToGive)) {
