@@ -75,6 +75,31 @@ class PointsHelper {
     static sortUserPointsListByPoints(userPointsList) {
         return userPointsList.sort((userPoints1, userPoints2) => userPoints2.points - userPoints1.points);
     }
+
+    static giftPoints(msg, pointsToGive, userPointsToGiveTo, usernameToDeductFrom, userPointsList) {
+        let message, sendMessage, userToDeductFrom;
+        if (Number.isNaN(pointsToGive)) {
+            message = `${pointsToGive} is not a valid number.\n`;
+            sendMessage = true;
+        }
+
+        if (userPointsToGiveTo === null || userPointsToGiveTo === undefined) {
+            message = message !== undefined ? `${message}${userToGivePointsTo} is not a valid username.` : `${userToGivePointsTo} is not a valid username.`;
+            sendMessage = true;
+        }
+
+        if (sendMessage) {
+            msg.channel.send(message);
+        } else {
+            userPointsToGiveTo = this.addPoints(pointsToGive, userPointsToGiveTo);
+            userPointsList = this.updateUserPointsInUserPointsList(userPointsList, userPointsToGiveTo);
+            userToDeductFrom = this.findUserInUserPointsList(userPointsList, usernameToDeductFrom);
+            userToDeductFrom = this.removePoints(pointsToGive, userToDeductFrom);
+            userPointsList = this.updateUserPointsInUserPointsList(userPointsList, userToDeductFrom);
+            FileHelper.writeFile(userPointsList, userPointsFilePath);
+            msg.channel.send(`Successfully added ${pointsToGive} points to ${userPointsToGiveTo.username}'s account from ${usernameToDeductFrom}!\n${userPointsToGiveTo.username} now has ${userPointsToGiveTo.points} points.\n${usernameToDeductFrom} now has ${userToDeductFrom.points} points.`);
+        }
+    }
 }
 
 module.exports = PointsHelper;

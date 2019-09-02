@@ -23,6 +23,7 @@ client.on('message', msg => {
         let userPointsList = FileHelper.readFile(userPointsFilePath);
         let userPoints = PointsHelper.findUserInUserPointsList(userPointsList, username);
         const isSpencer = username === 'PoshPrincess7' ? true : false;
+
         if (userPoints === null || userPoints === undefined) {
             userPoints = DiscordHelper.createNewUser(msg, username, userPointsFilePath, userPointsList);
         }
@@ -99,30 +100,7 @@ client.on('message', msg => {
             const userToGivePointsTo = msg.content.split(" ")[1];
             const pointsToGive = Number(msg.content.split(" ")[2]);
             let userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, userToGivePointsTo);
-            let message, sendMessage, userToDeductFrom;
-
-            if (Number.isNaN(pointsToGive)) {
-                message = `${pointsToGive} is not a valid number.\n`;
-                sendMessage = true;
-            }
-
-            if (userPointsToGiveTo === null || userPointsToGiveTo === undefined) {
-                message = message !== undefined ? `${message}${userToGivePointsTo} is not a valid username.` : `${userToGivePointsTo} is not a valid username.`;
-                sendMessage = true;
-            }
-
-            if (sendMessage) {
-                msg.channel.send(message);
-            } else {
-                userPointsToGiveTo = PointsHelper.addPoints(pointsToGive, userPointsToGiveTo);
-                userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userPointsToGiveTo);
-                userToDeductFrom = PointsHelper.findUserInUserPointsList(userPointsList, username);
-                userToDeductFrom = PointsHelper.removePoints(pointsToGive, userToDeductFrom);
-                userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userToDeductFrom);
-
-                FileHelper.writeFile(userPointsList, userPointsFilePath);
-                msg.channel.send(`Successfully added ${pointsToGive} points to ${userToGivePointsTo}'s account from ${username}!\n${userToGivePointsTo} now has ${userPointsToGiveTo.points} points.\n${username} now has ${userToDeductFrom.points} points.`);
-            }
+            PointsHelper.giftPoints(msg, pointsToGive, userPointsToGiveTo, username, userPointsList);
         }
     }
 });
