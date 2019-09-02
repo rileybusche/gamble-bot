@@ -13,7 +13,7 @@ To start the bot for testing, ``cd`` into the directory that you cloned the repo
 If you want to run the bot in a persistent mode on the machine you are running it on, run the command ``sudo nohup node bot.js &``.  This will run the program in the background and persist it.
 
 ## Find and Kill the Bot When Persistent
-To find the bot's process id, type ``ps aux | grep -i "bot.js"`` from the command prompt and you should get a list of process IDs that are associated with the commands that kicked them off.  Find the ``sudo nohup node bot.js &`` command and get the associated process ID.  Next, type ``sudo kill {insert process ID without curly braces}`` Ex: ``sudo kill 29474``.
+To find the bot's process id, type ``ps aux | grep -i "bot.js"`` from the command prompt and you should get a list of process IDs that are associated with the commands that kicked them off.  Find the ``sudo nohup node bot.js &`` command and get the associated process ID.  Next, type ``sudo kill {insert process ID without curly braces}``. Ex: ``sudo kill 29474``
 
 ## Discord Setup
 Go to https://discordapp.com/developers/applications/ and create a new app called ``gamble-bot-dev`` or something similar to that.  This will be your test bot that you add to your test server.  Under ``Settings``, go to ``Bot`` and create a new bot.  Copy your token and then go to the ``OAuth2`` tab.  Under ``Scopes``, choose ``bot`` and give all of the text permissions.
