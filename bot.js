@@ -72,6 +72,10 @@ client.on('message', msg => {
             let userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, userToGivePointsTo);
             PointsHelper.giftPoints(msg, pointsToGive, userPointsToGiveTo, username, userPointsList);
         }
+
+        if (msg.content === "!quit" && isSpencer) {
+            process.exit()
+        }
     }
 });
 
