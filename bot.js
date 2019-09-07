@@ -74,7 +74,7 @@ client.on('message', msg => {
             PointsHelper.giftPoints(msg, pointsToGive, userPointsToGiveTo, username, userPointsList);
         }
 
-        if (msg.content === "!quit" && isSpencer {
+        if (msg.content === "!quit" && isSpencer) {
             msg.channel.send("Shutting Down.").then(() => {
                 process.exit();
             })
