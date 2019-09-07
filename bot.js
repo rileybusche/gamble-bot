@@ -23,6 +23,7 @@ client.on('message', msg => {
         let userPointsList = FileHelper.readFile(userPointsFilePath);
         let userPoints = PointsHelper.findUserInUserPointsList(userPointsList, username);
         const isSpencer = username === 'PoshPrincess7' ? true : false;
+        // const isRiley = username === 'LiquidLuck' ? true : false;
 
         if (userPoints === null || userPoints === undefined) {
             userPoints = DiscordHelper.createNewUser(msg, username, userPointsFilePath, userPointsList);
@@ -71,6 +72,12 @@ client.on('message', msg => {
             const pointsToGive = Number(msg.content.split(" ")[2]);
             let userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, userToGivePointsTo);
             PointsHelper.giftPoints(msg, pointsToGive, userPointsToGiveTo, username, userPointsList);
+        }
+
+        if (msg.content === "!quit" && isSpencer {
+            msg.channel.send("Shutting Down.").then(() => {
+                process.exit();
+            })
         }
     }
 });
