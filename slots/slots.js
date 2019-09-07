@@ -148,10 +148,17 @@ class Slots {
 
     static startSlots(msg, userPoints) {
         const username = userPoints.username;
-        let wager = msg.content.split(" ")[1];
+        let wager
+
+        if (msg.content.split(" ")[1] === "all") {
+            wager = userPoints.points
+        } else {
+            wager = msg.content.split(" ")[1];
+        }
+
         let wagerValidation = PointsHelper.validateWager(wager, userPoints);
         wager = parseInt(Number(wager));
-
+        
         if (!wagerValidation.userHasFunds) {
             msg.channel.send("You do not have enough funds to make this bet. Current Total: " + userPoints.points);
         }
