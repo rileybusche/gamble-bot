@@ -1,7 +1,6 @@
 const emojisMap = require('../emoji-map.json').emojis;
 const PointsHelper = require('../helpers/points-helper');
-const FileHelper = require('../helpers/file-helper');
-const userPointsFilePath = '/../userPoints.json';
+const RandomHelper = require('../helpers/random-helper');
 
 class Slots {
     static getEmojiMap() {
@@ -19,7 +18,8 @@ class Slots {
     }
 
     static generateRandomEmoji() {
-        const randomNumber = Math.floor(Math.random() * Object.keys(emojisMap).length);
+        const numberOfEmojis = Object.keys(emojisMap).length;
+        const randomNumber = RandomHelper.generateRandomNumberBetweenZeroAndMax(numberOfEmojis);
         const emojiCodeArray = this.mapToArray(emojisMap);
 
         return emojiCodeArray[randomNumber];
