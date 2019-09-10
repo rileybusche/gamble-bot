@@ -32,8 +32,13 @@ client.on('message', msg => {
         }
 
         if (msg.content === '!avoid-being-cancelled' && isSpencer) {
+            this.avoidCancellation = true;
             msg.channel.send('I love Gay people');
-            this.avoidCancellation = !this.avoidCancellation;
+        }
+
+        if (msg.content === '!safe-from-being-cancelled' && isWilly) {
+            this.avoidCancellation = false;
+            msg.channel.send('Successfully avoided being cancelled');
         }
 
         if (msg.content.startsWith('!slots')) {
