@@ -1,14 +1,9 @@
-const emojisMap = require('./emoji-map.json').emojis;
 const PointsHelper = require('../points/points-helper');
 const RandomHelper = require('../helpers/random-helper');
 
 class Slots {
-    static getEmojiMap() {
-        return emojisMap;
-    }
-
     static getEmojiCode(emojiName) {
-        return emojisMap[emojiName] !== undefined ? emojisMap[emojiName] : "Emoji is not currently supported.";
+        return this.emojisMap[emojiName] !== undefined ? this.emojisMap[emojiName] : "Emoji is not currently supported.";
     }
 
     static mapToArray(map) {
@@ -18,9 +13,9 @@ class Slots {
     }
 
     static generateRandomEmoji() {
-        const numberOfEmojis = Object.keys(emojisMap).length;
+        const numberOfEmojis = Object.keys(this.emojisMap).length;
         const randomNumber = RandomHelper.generateRandomNumberBetweenZeroAndMax(numberOfEmojis);
-        const emojiCodeArray = this.mapToArray(emojisMap);
+        const emojiCodeArray = this.mapToArray(this.emojisMap);
 
         return emojiCodeArray[randomNumber];
     }
@@ -146,9 +141,10 @@ class Slots {
         return results;
     }
 
-    static startSlots(msg, userPoints) {
+    static startSlots(msg, userPoints, selectedEmojiMapPath) {
         const username = userPoints.username;
-        let wager
+        this.emojisMap = require(selectedEmojiMapPath).emojis;
+        let wager;
 
         if (msg.content.split(" ")[1] === "all") {
             wager = userPoints.points

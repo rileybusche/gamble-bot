@@ -14,6 +14,8 @@ client.on('ready', () => {
     if (userPointsList === undefined || userPointsList === null) {
         PointsHelper.createUserPointsFile(userPointsFilePath);
     }
+
+    this.avoidCancellation = false;
 });
 
 client.on('message', msg => {
@@ -23,14 +25,20 @@ client.on('message', msg => {
         let userPointsList = FileHelper.readFile(userPointsFilePath);
         let userPoints = PointsHelper.findUserInUserPointsList(userPointsList, username);
         const isSpencer = username === 'PoshPrincess7' ? true : false;
-        // const isRiley = username === 'LiquidLuck' ? true : false;
+        const isWilly = username === 'Gaytor' ? true : false;
 
         if (userPoints === null || userPoints === undefined) {
             userPoints = DiscordHelper.createNewUser(msg, username, userPointsFilePath, userPointsList);
         }
 
+        if (msg.content === '!avoid-being-cancelled' && isSpencer) {
+            this.avoidCancellation = true;
+        }
+
         if (msg.content.startsWith('!slots')) {
-            userPoints = Slots.startSlots(msg, userPoints);
+            const selectedEmojiMapPath = this.avoidCancellation && (isWilly) ? './support-gays.json' : './emoji-map.json'
+            console.log(selectedEmojiMapPath);
+            userPoints = Slots.startSlots(msg, userPoints, selectedEmojiMapPath);
             userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userPoints);
             FileHelper.writeFile(userPointsList, userPointsFilePath);
         }
