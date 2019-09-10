@@ -1,5 +1,5 @@
-const emojisMap = require('../emoji-map.json').emojis;
-const PointsHelper = require('../helpers/points-helper');
+const emojisMap = require('./emoji-map.json').emojis;
+const PointsHelper = require('../points/points-helper');
 const RandomHelper = require('../helpers/random-helper');
 
 class Slots {
@@ -158,7 +158,7 @@ class Slots {
 
         let wagerValidation = PointsHelper.validateWager(wager, userPoints);
         wager = parseInt(Number(wager));
-        
+
         if (!wagerValidation.userHasFunds) {
             msg.channel.send("You do not have enough funds to make this bet. Current Total: " + userPoints.points);
         }
@@ -168,6 +168,10 @@ class Slots {
             wagerValidation.isValid = false;
         } else if (Number(wager) === 0) {
             msg.channel.send("Please bet more than 0!");
+            wagerValidation.isValid = false;
+        } else if (!wagerValidation.isWagerAValidNumber) {
+            msg.channel.send("That is not a valid wager.  Syntax (How to bet 7000 points): !slots 7000");
+            wagerValidation.isValid = false;
         }
 
         if (wagerValidation.isValid) {
@@ -183,10 +187,6 @@ class Slots {
             }
 
             msg.channel.send(message);
-        }
-
-        if (!wagerValidation.isWagerAValidNumber) {
-            msg.channel.send("That is not a valid wager.  Syntax (How to bet 7000 points): !slots 7000");
         }
 
         return userPoints;

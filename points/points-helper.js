@@ -1,4 +1,4 @@
-const FileHelper = require('./file-helper');
+const FileHelper = require('../helpers/file-helper');
 const userPointsFilePath = '/../userPoints.json';
 const _ = require('lodash');
 

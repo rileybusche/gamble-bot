@@ -1,7 +1,7 @@
-const FileHelper = require('./file-helper');
+const FileHelper = require('../helpers/file-helper');
 const userPointsFilePath = '/../userPoints.json';
 const rankDictionaryFilePath = '/../rank-dictionary.json';
-const PointsHelper = require('./points-helper');
+const PointsHelper = require('../points/points-helper');
 
 class RankHelper {
     static updateUserRank(userPoints) {

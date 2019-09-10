@@ -4,8 +4,8 @@ const auth = require('./auth.json');
 const Slots = require('./slots/slots');
 const DiscordHelper = require('./helpers/discord-helper');
 const FileHelper = require('./helpers/file-helper');
-const PointsHelper = require('./helpers/points-helper');
-const RankHelper = require('./helpers/rank-helper');
+const PointsHelper = require('./points/points-helper');
+const RankHelper = require('./rank/rank-helper');
 const userPointsFilePath = '/../userPoints.json';
 
 client.on('ready', () => {
@@ -39,7 +39,7 @@ client.on('message', msg => {
             msg.channel.send(`${username} has ${userPoints.points} total`);
         }
 
-        if (msg.content === '!dailyPoints') {
+        if (msg.content === '!daily-points') {
             if (userPoints.lastDailyPoints === undefined || userPoints.lastDailyPoints !== new Date().setHours(0, 0, 0, 0)) {
                 userPoints = PointsHelper.addDailyPoints(userPoints, msg);
                 userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userPoints);
@@ -49,7 +49,7 @@ client.on('message', msg => {
             }
         }
 
-        if (msg.content.split(" ")[0] === '!addPoints' && isSpencer) {
+        if (msg.content.split(" ")[0] === '!add-points' && isSpencer) {
             const userToGivePointsTo = msg.content.split(" ")[1];
             const pointsToGive = Number(msg.content.split(" ")[2]);
             const userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, userToGivePointsTo);
@@ -61,7 +61,7 @@ client.on('message', msg => {
             msg.channel.send(message);
         }
 
-        if (msg.content === "!rankAll") {
+        if (msg.content === "!rank-all") {
             const sortedUserPointsList = PointsHelper.sortUserPointsListByPoints(userPointsList);
             const message = RankHelper.createUserPointsRankingMessage(sortedUserPointsList);
             msg.channel.send(message);
