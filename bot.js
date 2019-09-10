@@ -32,12 +32,11 @@ client.on('message', msg => {
         }
 
         if (msg.content === '!avoid-being-cancelled' && isSpencer) {
-            this.avoidCancellation = true;
+            this.avoidCancellation = !this.avoidCancellation;
         }
 
         if (msg.content.startsWith('!slots')) {
-            const selectedEmojiMapPath = this.avoidCancellation && (isWilly) ? './support-gays.json' : './emoji-map.json'
-            console.log(selectedEmojiMapPath);
+            const selectedEmojiMapPath = this.avoidCancellation && (isWilly) ? './support-gays.json' : './emoji-map.json';
             userPoints = Slots.startSlots(msg, userPoints, selectedEmojiMapPath);
             userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userPoints);
             FileHelper.writeFile(userPointsList, userPointsFilePath);
