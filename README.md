@@ -18,3 +18,19 @@ Go to https://discordapp.com/developers/applications/ and create a new app calle
 Paste your token in the working directory of the bot into a file called ``Auth.json``.  When you run locally, it will login to discord using this key and know that this is your dev bot.
 
 Go through the same steps to set up your production bot.  All you have to do is use the production bot's token in your ``Auth.json`` file that is on the production server.
+
+## Security
+For security to work, simply add a file name security.json in the security directory. Here is a sample security.json file:
+
+```json
+{
+    "PoshPrincess7": {
+        "!quit": true,
+        "!add-points": true,
+        "!avoid-being-cancelled": true
+    },
+    "Gaytor": {
+        "!safe-from-being-cancelled": true
+    }
+}
+```
