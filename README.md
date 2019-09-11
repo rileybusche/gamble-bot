@@ -34,3 +34,5 @@ For security to work, simply add a file name security.json in the security direc
     }
 }
 ```
+
+The keys are the usernames of the people with permissions and the objects in side are a dictionary of commands the user may or may not have access to.  This needs to be refactored because it currently doesn't matter whether the value of the command keys is true or false.  Simply having the command in the dictionary is enough.
