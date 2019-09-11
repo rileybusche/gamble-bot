@@ -124,7 +124,7 @@ client.on('message', msg => {
 
                     msg.channel.send(message);
                 } else {
-                    msg.channel.send(`Invalid page number.  Total possible pages: ${totalPossiblePages}`);
+                    msg.channel.send(`Invalid page number.  Total possible pages: ${totalPossiblePages + 1}`);
                 }
             } else {
                 for (let command of commands) {
