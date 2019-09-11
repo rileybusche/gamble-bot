@@ -1,13 +1,19 @@
 const FileHelper = require('../helpers/file-helper');
 
 class Security {
-    static Security(userPoints) {
+    constructor(userPoints) {
         this.userPoints = userPoints;
         this.security = FileHelper.readFile('/../security/security.json');
     }
 
-    static isUserAuthorized() {
-        console.log(this.security);
+    isUserAuthorized(command) {
+        const username = this.userPoints.username;
+        const permissionsDictionary = this.security[username];
+        if (permissionsDictionary !== undefined) {
+            return permissionsDictionary[command] !== undefined ? true : false;
+        } else {
+            return false;
+        }
     }
 }
 

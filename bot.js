@@ -7,6 +7,7 @@ const FileHelper = require('./helpers/file-helper');
 const PointsHelper = require('./points/points-helper');
 const RankHelper = require('./rank/rank-helper');
 const userPointsFilePath = '/../userPoints.json';
+const Security = require('./security/security');
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -26,17 +27,18 @@ client.on('message', msg => {
         let userPoints = PointsHelper.findUserInUserPointsList(userPointsList, username);
         const isSpencer = username === 'PoshPrincess7' ? true : false;
         const isWilly = username === 'Gaytor' ? true : false;
+        let security = new Security(userPoints);
 
         if (userPoints === null || userPoints === undefined) {
             userPoints = DiscordHelper.createNewUser(msg, username, userPointsFilePath, userPointsList);
         }
 
-        if (msg.content === '!avoid-being-cancelled' && isSpencer) {
+        if (msg.content === '!avoid-being-cancelled' && security.isUserAuthorized('!avoid-being-cancelled')) {
             this.avoidCancellation = true;
             msg.channel.send('I love gay people');
         }
 
-        if (msg.content === '!safe-from-being-cancelled' && isWilly) {
+        if (msg.content === '!safe-from-being-cancelled' && security.isUserAuthorized('!safe-from-being-cancelled')) {
             this.avoidCancellation = false;
             msg.channel.send('Successfully avoided being cancelled');
         }
@@ -62,7 +64,7 @@ client.on('message', msg => {
             }
         }
 
-        if (msg.content.split(" ")[0] === '!add-points' && isSpencer) {
+        if (msg.content.split(" ")[0] === '!add-points' && security.isUserAuthorized('!add-points')) {
             const userToGivePointsTo = msg.content.split(" ")[1];
             const pointsToGive = Number(msg.content.split(" ")[2]);
             const userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, userToGivePointsTo);
@@ -87,7 +89,7 @@ client.on('message', msg => {
             PointsHelper.giftPoints(msg, pointsToGive, userPointsToGiveTo, username, userPointsList);
         }
 
-        if (msg.content === "!quit" && isSpencer) {
+        if (msg.content === "!quit" && security.isUserAuthorized('!quit')) {
             msg.channel.send("Shutting Down.").then(() => {
                 process.exit();
             })
