@@ -33,7 +33,7 @@ client.on('message', msg => {
 
         if (msg.content === '!avoid-being-cancelled' && isSpencer) {
             this.avoidCancellation = true;
-            msg.channel.send('I love Gay people');
+            msg.channel.send('I love gay people');
         }
 
         if (msg.content === '!safe-from-being-cancelled' && isWilly) {
