@@ -92,7 +92,49 @@ client.on('message', msg => {
         if (msg.content === "!quit" && security.isUserAuthorized('!quit')) {
             msg.channel.send("Shutting Down.").then(() => {
                 process.exit();
-            })
+            });
+        }
+
+        if (msg.content.startsWith("!help")) {
+            let commands = FileHelper.readFile('/../help.json').commands;
+            let message = '';
+            const pageNumber = msg.content.split(" ")[1];
+            const totalPossiblePages = parseInt(commands.length / 4);
+            if (pageNumber !== undefined) {
+                if (Number(pageNumber) !== NaN && pageNumber <= totalPossiblePages) {
+                    message = `Page Number: ${pageNumber}\n`;
+
+                    for (let i = 0; i < 4; i++) {
+                        const commandIndex = i + ((Number(pageNumber) - 1) * 4);
+                        console.log(commandIndex);
+                        const { name, description, usage, example, requireSpecialPermissions } = commands[commandIndex];
+                        message = message + `Command: ${name}\nDescription: ${description}\nUsage: ${usage}\nExample: ${example}\n`;
+                        message = requireSpecialPermissions ? message + 'This command requires special permissions\n\n' : message + '\n';
+                    }
+
+                    msg.channel.send(message);
+                } else if (Number(pageNumber) === totalPossiblePages + 1) {
+                    for (let i = 0; i < parseInt(commands.length % 4); i++) {
+                        const commandIndex = i + ((Number(pageNumber) - 1) * 4) - 1;
+                        console.log(commandIndex);
+                        const { name, description, usage, example, requireSpecialPermissions } = commands[commandIndex];
+                        message = message + `Command: ${name}\nDescription: ${description}\nUsage: ${usage}\nExample: ${example}\n`;
+                        message = requireSpecialPermissions ? message + 'This command requires special permissions\n\n' : message + '\n';
+                    }
+
+                    msg.channel.send(message);
+                } else {
+                    msg.channel.send(`Invalid page number.  Total possible pages: ${totalPossiblePages}`);
+                }
+            } else {
+                for (let command of commands) {
+                    const { name, description, usage, example, requireSpecialPermissions } = command;
+                    message = message + `Command: ${name}\nDescription: ${description}\nUsage: ${usage}\nExample: ${example}\n`;
+                    message = requireSpecialPermissions ? message + 'This command requires special permissions\n\n' : message + '\n';
+                }
+
+                msg.channel.send(message);
+            }
         }
     }
 });

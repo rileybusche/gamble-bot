@@ -1,0 +1,66 @@
+{
+    "commands": [{
+            "name": "!slots",
+            "description": "Play a game of slots.",
+            "usage": "!slots [wager]",
+            "example": "!slots 500",
+            "requireSpecialPermissions": false
+        },
+        {
+            "name": "!avoid-being-cancelled",
+            "description": "Pays out reparations.",
+            "usage": "!avoid-being-cancelled",
+            "example": "!avoid-being-cancelled",
+            "requireSpecialPermissions": true
+        },
+        {
+            "name": "!safe-from-being-cancelled",
+            "description": "Confirms that reparations have been accepted and all has been ammended.",
+            "usage": "!safe-from-being-cancelled",
+            "example": "!safe-from-being-cancelled",
+            "requireSpecialPermissions": true
+        },
+        {
+            "name": "!points",
+            "description": "Prints out the user's total number of points.",
+            "usage": "!points",
+            "example": "!points",
+            "requireSpecialPermissions": false
+        },
+        {
+            "name": "!daily-points",
+            "description": "Gives the user their daily allowance of points if they haven't already claimed them.",
+            "usage": "!daily-points",
+            "example": "!daily-points",
+            "requireSpecialPermissions": false
+        },
+        {
+            "name": "!add-points",
+            "description": "Adds points to a specified user's account.",
+            "usage": "!add-points [userToGivePointsTo] [points]",
+            "example": "!add-points PoshPrincess7 1000",
+            "requireSpecialPermissions": true
+        },
+        {
+            "name": "!rank",
+            "description": "Display a user's rank class which is determined by ranges of points.",
+            "usage": "!rank",
+            "example": "!rank",
+            "requireSpecialPermissions": false
+        },
+        {
+            "name": "!rank-all",
+            "description": "Displays all of the user's in order of most points to least.",
+            "usage": "!rank-all",
+            "example": "!rank-all",
+            "requireSpecialPermissions": false
+        },
+        {
+            "name": "!gift",
+            "description": "Give another player some of your own points.",
+            "usage": "!gift [userToGivePointsTo] [points]",
+            "example": "!gift PoshPrincess7 1000",
+            "requireSpecialPermissions": false
+        }
+    ]
+}
