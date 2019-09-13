@@ -87,7 +87,7 @@ client.on('message', msg => {
             const pointsToGive = Number(msg.content.split(" ")[2]);
             let userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, userToGivePointsTo);
 
-            if (userToGivePointsTo !== undefined) {
+            if (userToGivePointsTo === undefined) {
                 console.log(userToGivePointsTo);
                 msg.channel.send('Not a valid username.');
             } else {
