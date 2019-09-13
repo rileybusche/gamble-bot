@@ -86,7 +86,14 @@ client.on('message', msg => {
             const userToGivePointsTo = msg.content.split(" ")[1];
             const pointsToGive = Number(msg.content.split(" ")[2]);
             let userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, userToGivePointsTo);
-            PointsHelper.giftPoints(msg, pointsToGive, userPointsToGiveTo, username, userPointsList);
+
+            if (userToGivePointsTo !== undefined) {
+                console.log(userToGivePointsTo);
+                msg.channel.send('Not a valid username.');
+            } else {
+                PointsHelper.giftPoints(msg, pointsToGive, userPointsToGiveTo, username, userPointsList);
+            }
+
         }
 
         if (msg.content === "!quit" && security.isUserAuthorized('!quit')) {
