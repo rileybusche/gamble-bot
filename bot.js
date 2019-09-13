@@ -28,7 +28,7 @@ client.on('message', msg => {
         const isSpencer = username === 'PoshPrincess7' ? true : false;
         const isWilly = username === 'Gaytor' ? true : false;
         let security = new Security(userPoints);
-
+        console.log(security);
         if (userPoints === null || userPoints === undefined) {
             userPoints = DiscordHelper.createNewUser(msg, username, userPointsFilePath, userPointsList);
         }
