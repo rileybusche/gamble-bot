@@ -122,7 +122,7 @@ client.on('message', msg => {
                     msg.channel.send(message);
                 } else if (Number(pageNumber) === totalPossiblePages + 1) {
                     for (let i = 0; i < parseInt(commands.length % 4); i++) {
-                        const commandIndex = i + ((Number(pageNumber) - 1) * 4) - 1;
+                        const commandIndex = i + ((Number(pageNumber) - 1) * 4);
                         console.log(commandIndex);
                         const { name, description, usage, example, requireSpecialPermissions } = commands[commandIndex];
                         message = message + `Command: ${name}\nDescription: ${description}\nUsage: ${usage}\nExample: ${example}\n`;
