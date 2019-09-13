@@ -18,10 +18,11 @@ class FileHelper {
 
     static readFile(filePath) {
         filePath = __dirname + filePath;
-
+        console.log(filePath);
         try {
             return JSON.parse(fs.readFileSync(filePath, { encoding: 'utf-8' }));
         } catch (err) {
+            console.log(err.message);
             return null;
         }
     }
