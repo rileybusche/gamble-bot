@@ -78,13 +78,14 @@ class PointsHelper {
 
     static giftPoints(msg, pointsToGive, userPointsToGiveTo, usernameToDeductFrom, userPointsList) {
         let message, sendMessage, userToDeductFrom;
+
         if (Number.isNaN(pointsToGive)) {
             message = `${pointsToGive} is not a valid number.\n`;
             sendMessage = true;
         }
 
-        if (userPointsToGiveTo === null || userPointsToGiveTo === undefined) {
-            message = message !== undefined ? `${message}${userToGivePointsTo} is not a valid username.` : `${userToGivePointsTo} is not a valid username.`;
+        if (usernameToDeductFrom === userPointsToGiveTo.username) {
+            message = `${message !== undefined ? message : ''}You may not gift points to yourself.\n`;
             sendMessage = true;
         }
 

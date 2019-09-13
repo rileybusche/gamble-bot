@@ -28,7 +28,7 @@ client.on('message', msg => {
         const isSpencer = username === 'PoshPrincess7' ? true : false;
         const isWilly = username === 'Gaytor' ? true : false;
         let security = new Security(userPoints);
-        console.log(security);
+
         if (userPoints === null || userPoints === undefined) {
             userPoints = DiscordHelper.createNewUser(msg, username, userPointsFilePath, userPointsList);
         }
@@ -55,7 +55,8 @@ client.on('message', msg => {
         }
 
         if (msg.content === '!daily-points') {
-            if (userPoints.lastDailyPoints === undefined || userPoints.lastDailyPoints !== new Date().setHours(0, 0, 0, 0)) {
+            let currentDate = new Date().setHours(0, 0, 0, 0);
+            if (userPoints.lastDailyPoints === undefined || userPoints.lastDailyPoints !== currentDate) {
                 userPoints = PointsHelper.addDailyPoints(userPoints, msg);
                 userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userPoints);
                 FileHelper.writeFile(userPointsList, userPointsFilePath);
@@ -82,19 +83,18 @@ client.on('message', msg => {
             msg.channel.send(message);
         }
 
-        // if (msg.content.startsWith("!gift")) {
-        //     const userToGivePointsTo = msg.content.split(" ")[1];
-        //     const pointsToGive = Number(msg.content.split(" ")[2]);
-        //     let userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, userToGivePointsTo);
+        if (msg.content.startsWith("!gift")) {
+            const usernameToGivePointsTo = msg.content.split(" ")[1];
+            const pointsToGive = Number(msg.content.split(" ")[2]);
+            let userPointsToGiveTo = PointsHelper.findUserInUserPointsList(userPointsList, usernameToGivePointsTo);
 
-        //     if (userToGivePointsTo === undefined) {
-        //         console.log(userToGivePointsTo);
-        //         msg.channel.send('Not a valid username.');
-        //     } else {
-        //         PointsHelper.giftPoints(msg, pointsToGive, userPointsToGiveTo, username, userPointsList);
-        //     }
+            if (userPointsToGiveTo === undefined) {
+                msg.channel.send('Not a valid username.');
+            } else {
+                PointsHelper.giftPoints(msg, pointsToGive, userPointsToGiveTo, username, userPointsList);
+            }
 
-        // }
+        }
 
         if (msg.content === "!quit" && security.isUserAuthorized('!quit')) {
             msg.channel.send("Shutting Down.").then(() => {
@@ -113,7 +113,6 @@ client.on('message', msg => {
 
                     for (let i = 0; i < 4; i++) {
                         const commandIndex = i + ((Number(pageNumber) - 1) * 4);
-                        console.log(commandIndex);
                         const { name, description, usage, example, requireSpecialPermissions } = commands[commandIndex];
                         message = message + `Command: ${name}\nDescription: ${description}\nUsage: ${usage}\nExample: ${example}\n`;
                         message = requireSpecialPermissions ? message + 'This command requires special permissions\n\n' : message + '\n';
@@ -123,7 +122,6 @@ client.on('message', msg => {
                 } else if (Number(pageNumber) === totalPossiblePages + 1) {
                     for (let i = 0; i < parseInt(commands.length % 4); i++) {
                         const commandIndex = i + ((Number(pageNumber) - 1) * 4);
-                        console.log(commandIndex);
                         const { name, description, usage, example, requireSpecialPermissions } = commands[commandIndex];
                         message = message + `Command: ${name}\nDescription: ${description}\nUsage: ${usage}\nExample: ${example}\n`;
                         message = requireSpecialPermissions ? message + 'This command requires special permissions\n\n' : message + '\n';
