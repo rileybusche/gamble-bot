@@ -8,6 +8,7 @@ const PointsHelper = require('./points/points-helper');
 const RankHelper = require('./rank/rank-helper');
 const userPointsFilePath = '/../userPoints.json';
 const Security = require('./security/security');
+const Blackjack = require('./blackjack/blackjack');
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -140,6 +141,11 @@ client.on('message', msg => {
 
                 msg.channel.send(message);
             }
+        }
+
+        if (msg.content === "!blackjack") {
+            Blackjack.playBlackjack(userPoints);
+            msg.channel.send("Coming soon...");
         }
     }
 });

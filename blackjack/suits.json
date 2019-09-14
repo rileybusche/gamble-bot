@@ -1,0 +1,6 @@
+{
+    "hearts": 0,
+    "diamonds": 1,
+    "spades": 2,
+    "clubs": 3
+}
