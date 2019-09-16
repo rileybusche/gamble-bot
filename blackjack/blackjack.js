@@ -38,6 +38,7 @@ class BlackJack {
     }
 
     createHandMessage(hand, forUser) {
+        console.log(JSON.stringify(hand));
         let message = forUser ? `${this.userPoints.username}'s hand:\n` : `Dealer's hand:\n`;
         for (let card of hand) {
             const { value, suit } = card;
@@ -161,15 +162,16 @@ class BlackJack {
 
     sumCards(hand) {
         const convertedHand = this.convertFaceCardsToNumber(hand);
-        const values = convertedHand.map(card => card.value);
+        const values = convertedHand.map(card => card.value > 10 ? 10 : card.value);
         this.convertBackToFaceCardNames(hand);
-        return values.reduce((total, currentValue) => Number(currentValue) > 10 ? Number(total) + 10 : Number(total) + Number(currentValue));
+        return values.reduce((accumulator, currentValue) => Number(accumulator) + Number(currentValue));
     }
 
     convertFaceCardsToNumber(hand) {
         for (let card of hand) {
             if (Number.isNaN(Number(card.value))) {
                 card.value = Object.keys(faceCardsMap).find(key => faceCardsMap[key] === card.value);
+                console.log(card.value);
             }
         }
 
