@@ -137,6 +137,8 @@ class BlackJack {
         }
     }
 
+
+    //SPENCER TO DO: Make this only update the hand and leave something else to check the sum
     hit(hand) {
         const newCard = this.generateRandomCard();
         hand.push(newCard);
@@ -161,7 +163,7 @@ class BlackJack {
         const convertedHand = this.convertFaceCardsToNumber(hand);
         const values = convertedHand.map(card => card.value);
         this.convertBackToFaceCardNames(hand);
-        return values.reduce((total, currentValue) => currentValue > 10 ? Number(total) + 10 : Number(total) + Number(currentValue));
+        return values.reduce((total, currentValue) => Number(currentValue) > 10 ? Number(total) + 10 : Number(total) + Number(currentValue));
     }
 
     convertFaceCardsToNumber(hand) {
