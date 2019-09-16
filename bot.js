@@ -144,8 +144,10 @@ client.on('message', msg => {
         }
 
         if (msg.content === "!blackjack") {
-            //Blackjack.playBlackjack(userPoints);
-            msg.channel.send("Coming soon...");
+            const blackjack = new Blackjack(userPoints);
+            const message = blackjack.playBlackjack();
+            msg.channel.send(message);
+            //msg.channel.send("Coming soon...");
         }
     }
 });
