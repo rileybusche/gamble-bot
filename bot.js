@@ -143,11 +143,14 @@ client.on('message', msg => {
             }
         }
 
-        if (msg.content === "!blackjack") {
+        if (msg.content.startsWith("!blackjack")) {
             const blackjack = new Blackjack(userPoints);
-            const message = blackjack.playBlackjack();
+            const command = msg.content.split(" ")[1];
+            let message = blackjack.playBlackjack(command);
+            if (message === '' || message === undefined || message === null) {
+                message = 'No message';
+            }
             msg.channel.send(message);
-            //msg.channel.send("Coming soon...");
         }
     }
 });
