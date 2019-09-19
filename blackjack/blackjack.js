@@ -1,5 +1,6 @@
 const RandomNumber = require('../helpers/random-helper');
 const FileHelper = require('../helpers/file-helper');
+const PointsHelper = require('../points/points-helper');
 const NUMBER_OF_CARD_VALUES = 13;
 const NUMBER_OF_CARD_SUITS = 4;
 const suitMap = FileHelper.readFile('/../blackjack/suits.json');
@@ -12,6 +13,7 @@ class BlackJack {
         this.cardsToExclude = [];
         this.playersHand = [];
         this.dealersHand = [];
+        this.wager = null;
     }
 
     generateRandomCard() {
@@ -38,7 +40,6 @@ class BlackJack {
     }
 
     createHandMessage(hand, forUser) {
-        console.log(JSON.stringify(hand));
         let message = forUser ? `${this.userPoints.username}'s hand:\n` : `Dealer's hand:\n`;
         for (let card of hand) {
             const { value, suit } = card;
@@ -71,6 +72,7 @@ class BlackJack {
         }
 
         blackjackUser.userPoints = this.userPoints;
+        this.setState(blackjackUser);
         return blackjackUser;
     }
 
@@ -91,13 +93,14 @@ class BlackJack {
         let dealerMessage = this.createDealersShowingMessage(this.dealersHand);
         this.state = 'userMove';
         this.saveBlackjackToUser(this);
+        console.log(userMessage);
         return `${userMessage}\n${dealerMessage}`;
     }
 
     dealersTurn() {
-        this.hit(this.dealersHand);
         const dealerSum = this.sumCards(this.dealersHand);
         if (dealerSum < 17) {
+            this.hit(this.dealersHand);
             this.dealersTurn();
         } else {
             return dealerSum;
@@ -106,9 +109,17 @@ class BlackJack {
 
     playBlackjack(command) {
         const blackjackUser = this.readFromBlackjackUser();
-        this.setState(blackjackUser);
+
         if (blackjackUser.state === undefined) {
-            return this.beginning();
+            const wagerValidation = PointsHelper.validateWager(command, this.userPoints);
+
+            if (wagerValidation.isValid) {
+                this.wager = parseInt(Number(command));
+                return this.beginning();
+            } else {
+                return `You must submit a valid wager to start a game of Blackjack.\nEx: !blackjack 50`;
+            }
+
         } else if (blackjackUser.state === 'userMove') {
             let message;
             if (command === null || command === undefined) {
@@ -120,21 +131,29 @@ class BlackJack {
             } else if (command.toLowerCase() === 'stay') {
                 const dealerSum = this.dealersTurn();
                 const userSum = this.sumCards(this.playersHand);
+                let isWinner = false;
+
                 message = `${this.createHandMessage(this.dealersHand, false)}${this.userPoints.username}'s Total: ${userSum}\n`;
                 if (dealerSum <= 21 && dealerSum > userSum) {
-                    message = `${message}You lose.`;
+                    message = `${message}You lost ${this.wager} points.\nYou now have ${this.userPoints.points - this.wager} points.`;
                 } else if (dealerSum === userSum) {
                     message = `${message}It is a wash.`;
                 } else {
-                    message = `${message}You win`;
+                    message = `${message}You win ${this.wager} points.\n You now have ${this.userPoints.points + this.wager} points.`;
+                    isWinner = true;
                 }
 
+                if (isWinner) {
+                    this.userPoints = PointsHelper.addPointsToUserPoints(this.wager, this.userPoints);
+                } else {
+                    this.userPoints = PointsHelper.removePoints(this.wager, this.userPoints);
+                }
                 this.resetBlackjackGame();
+                console.log(JSON.stringify(this));
+                return { message: message, userPoints: this.userPoints };
             } else {
                 return `You must either type "!blackjack hit" or "!blackjack stay".\n${this.createHandMessage(this.playersHand, true)}`;
             }
-            this.setState(blackjackUser);
-            return message;
         }
     }
 

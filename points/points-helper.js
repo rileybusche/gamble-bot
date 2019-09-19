@@ -57,7 +57,7 @@ class PointsHelper {
     }
 
     static findUserInUserPointsList(userPointsList, username) {
-        return userPointsList.filter(userPoints => userPoints.username === username)[0];
+        return userPointsList === null ? null : userPointsList.filter(userPoints => userPoints.username === username)[0];
     }
 
     static updateUserPointsInUserPointsList(userPointsList, userPoints) {
@@ -78,9 +78,10 @@ class PointsHelper {
 
     static giftPoints(msg, pointsToGive, userPointsToGiveTo, usernameToDeductFrom, userPointsList) {
         let message, sendMessage, userToDeductFrom;
+        userToDeductFrom = this.findUserInUserPointsList(userPointsList, usernameToDeductFrom);
 
-        if (Number.isNaN(pointsToGive)) {
-            message = `${pointsToGive} is not a valid number.\n`;
+        if (Number.isNaN(pointsToGive) || pointsToGive <= 0 || pointsToGive < userToDeductFrom.points) {
+            message = `${pointsToGive} is not a valid number. Make sure you have enough points.\n`;
             sendMessage = true;
         }
 
@@ -94,7 +95,7 @@ class PointsHelper {
         } else {
             userPointsToGiveTo = this.addPointsToUserPoints(pointsToGive, userPointsToGiveTo);
             userPointsList = this.updateUserPointsInUserPointsList(userPointsList, userPointsToGiveTo);
-            userToDeductFrom = this.findUserInUserPointsList(userPointsList, usernameToDeductFrom);
+
             userToDeductFrom = this.removePoints(pointsToGive, userToDeductFrom);
             userPointsList = this.updateUserPointsInUserPointsList(userPointsList, userToDeductFrom);
             FileHelper.writeFile(userPointsList, userPointsFilePath);
