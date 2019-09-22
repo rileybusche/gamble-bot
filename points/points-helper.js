@@ -79,8 +79,8 @@ class PointsHelper {
     static giftPoints(msg, pointsToGive, userPointsToGiveTo, usernameToDeductFrom, userPointsList) {
         let message, sendMessage, userToDeductFrom;
         userToDeductFrom = this.findUserInUserPointsList(userPointsList, usernameToDeductFrom);
-
-        if (Number.isNaN(pointsToGive) || pointsToGive <= 0 || pointsToGive < userToDeductFrom.points) {
+        const validation = this.validateWager(pointsToGive, userToDeductFrom);
+        if (!validation.isValid) {
             message = `${pointsToGive} is not a valid number. Make sure you have enough points.\n`;
             sendMessage = true;
         }
