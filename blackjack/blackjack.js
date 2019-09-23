@@ -87,10 +87,12 @@ class BlackJack {
     }
 
     beginning() {
+        console.log('before generating hands');
         this.playersHand = this.generateHand(this.cardsToExclude);
         this.dealersHand = this.generateHand(this.cardsToExclude);
         let userMessage = this.createHandMessage(this.playersHand, true);
         let dealerMessage = this.createDealersShowingMessage(this.dealersHand);
+        console.log('here');
         this.state = 'userMove';
         this.saveBlackjackToUser(this);
         console.log(userMessage);
@@ -109,6 +111,8 @@ class BlackJack {
 
     playBlackjack(command) {
         const blackjackUser = this.readFromBlackjackUser();
+        const firstTime = blackjackUser ? true : false;
+        console.log(firstTime);
 
         if (blackjackUser.state === undefined) {
             const wagerValidation = PointsHelper.validateWager(command, this.userPoints);
@@ -117,6 +121,7 @@ class BlackJack {
                 this.wager = parseInt(Number(command));
                 return this.beginning();
             } else {
+                console.log('not valid');
                 return `You must submit a valid wager to start a game of Blackjack.\nEx: !blackjack 50`;
             }
 

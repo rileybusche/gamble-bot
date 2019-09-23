@@ -6,8 +6,7 @@ class PointsHelper {
     static validateWager(wager, userPoints) {
         const isWagerAValidNumber = wager === undefined ? false : !Number.isNaN(Number(wager));
         let userHasFunds;
-
-        if (userPoints.points <= 0 || wager > userPoints.points) {
+        if (userPoints.points <= 0 || wager > userPoints.points || wager <= 0) {
             userHasFunds = false;
         } else {
             userHasFunds = true;
@@ -81,7 +80,7 @@ class PointsHelper {
         userToDeductFrom = this.findUserInUserPointsList(userPointsList, usernameToDeductFrom);
         const validation = this.validateWager(pointsToGive, userToDeductFrom);
         if (!validation.isValid) {
-            message = `${pointsToGive} is not a valid number. Make sure you have enough points.\n`;
+            message = `${pointsToGive} is not a valid number. Make sure you have enough points and that you are giving more than 0.\n`;
             sendMessage = true;
         }
 
