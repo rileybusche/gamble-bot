@@ -139,7 +139,7 @@ class BlackJack {
                     this.message = `${this.message}\nYou win ${this.wager * 10}\nYou now have ${this.userPoints.points} points.`;
                 } else if (sum > 21) {
                     this.userPoints = PointsHelper.removePoints(this.wager, this.userPoints);
-                    this.message = `${this.message}\nYou win ${this.wager} points!\nYou now have ${this.userPoints.points} points.`;
+                    this.message = `${this.message}\nYou lost ${this.wager} points!\nYou now have ${this.userPoints.points} points.`;
                 }
             } else if (command.toLowerCase() === 'stay') {
                 let message;
