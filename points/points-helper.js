@@ -7,7 +7,7 @@ class PointsHelper {
         const isWagerAValidNumber = wager === undefined ? false : !Number.isNaN(Number(wager));
         let userHasFunds;
         wager = Number(wager);
-        if (userPoints.points <= 0 || wager > userPoints.points || wager <= 0) {
+        if (wager !== undefined && (userPoints.points <= 0 || wager > userPoints.points || wager <= 0)) {
             userHasFunds = false;
         } else {
             userHasFunds = true;
