@@ -100,11 +100,13 @@ class BlackJack {
     }
 
     dealersTurn() {
-        const dealerSum = this.sumCards(this.dealersHand);
+        let dealerSum = this.sumCards(this.dealersHand);
         if (dealerSum < 17) {
-            this.hit(this.dealersHand);
-            this.dealersTurn();
+            while (dealerSum < 17) {
+                this.hit(this.dealersHand);
+            }
         }
+        dealerSum = this.sumCards(this.dealersHand);
         return dealerSum;
     }
 
@@ -146,7 +148,6 @@ class BlackJack {
                 const returnedDealerSum = this.dealersTurn();
                 const userSum = this.sumCards(this.playersHand);
                 let isWinner = false;
-
                 message = `${this.createHandMessage(this.dealersHand, false)}${this.userPoints.username}'s Total: ${userSum}\n`;
                 if (returnedDealerSum <= 21 && returnedDealerSum > userSum) {
                     message = `${message}You lost ${this.wager} points.\nYou now have ${this.userPoints.points - this.wager} points.`;
