@@ -114,12 +114,12 @@ class BlackJack {
         if (blackjackUser.state === undefined) {
             const wagerValidation = PointsHelper.validateWager(command, this.userPoints);
 
-            if (wagerValidation.isValid) {
+            if (wagerValidation.isValid && command !== undefined) {
                 this.wager = command;
                 this.message = this.beginning();
             } else {
-                this.message = !wagerValidation.isWagerAValidNumber ? `${command} is not a valid wager. Please enter a real number.` : '';
-                this.message = `${this.message}${this.message !== '' ? '\n' : ''}You don't have enough funds to bet ${command}.\nYour Total Points: ${this.userPoints.points}`;
+                this.message = !wagerValidation.isWagerAValidNumber ? `${command !== undefined ? command : 'That'} is not a valid wager. Please enter a real number.` : '';
+                this.message = !wagerValidation.userHasFunds ? `${this.message}${this.message !== '' ? '\n' : ''}You don't have enough funds to bet ${command}.\nYour Total Points: ${this.userPoints.points}` : this.message;
             }
 
             return this;
