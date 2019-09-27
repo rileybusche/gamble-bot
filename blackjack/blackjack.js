@@ -14,6 +14,7 @@ class BlackJack {
         this.playersHand = [];
         this.dealersHand = [];
         this.wager = null;
+        this.message = '';
     }
 
     generateRandomCard() {
@@ -80,6 +81,8 @@ class BlackJack {
         this.cardsToExclude = blackjackUser.cardsToExclude;
         this.playersHand = blackjackUser.playersHand;
         this.dealersHand = blackjackUser.dealersHand;
+        this.wager = blackjackUser.wager;
+        this.sum = blackjackUser.sum;
     }
 
     resetBlackjackGame() {
@@ -87,15 +90,12 @@ class BlackJack {
     }
 
     beginning() {
-        console.log('before generating hands');
         this.playersHand = this.generateHand(this.cardsToExclude);
         this.dealersHand = this.generateHand(this.cardsToExclude);
         let userMessage = this.createHandMessage(this.playersHand, true);
         let dealerMessage = this.createDealersShowingMessage(this.dealersHand);
-        console.log('here');
         this.state = 'userMove';
         this.saveBlackjackToUser(this);
-        console.log(userMessage);
         return `${userMessage}\n${dealerMessage}`;
     }
 
@@ -104,47 +104,56 @@ class BlackJack {
         if (dealerSum < 17) {
             this.hit(this.dealersHand);
             this.dealersTurn();
-        } else {
-            return dealerSum;
         }
+        return dealerSum;
     }
 
     playBlackjack(command) {
         const blackjackUser = this.readFromBlackjackUser();
-        const firstTime = blackjackUser ? true : false;
-        console.log(firstTime);
 
         if (blackjackUser.state === undefined) {
             const wagerValidation = PointsHelper.validateWager(command, this.userPoints);
 
             if (wagerValidation.isValid) {
-                this.wager = parseInt(Number(command));
-                return this.beginning();
+                this.wager = command;
+                this.message = this.beginning();
             } else {
-                console.log('not valid');
-                return `You must submit a valid wager to start a game of Blackjack.\nEx: !blackjack 50`;
+                this.message = !wagerValidation.isWagerAValidNumber ? `${command} is not a valid wager. Please enter a real number.` : '';
+                this.message = `${this.message}${this.message !== '' ? '\n' : ''}You don't have enough funds to bet ${command}.\nYour Total Points: ${this.userPoints.points}`;
             }
 
+            return this;
         } else if (blackjackUser.state === 'userMove') {
-            let message;
             if (command === null || command === undefined) {
-                return `You must either type "!blackjack hit" or "!blackjack stay".\n${this.createHandMessage(this.playersHand, true)}`;
+                this.message = `You must either type "!blackjack hit" or "!blackjack stay".\n${this.createHandMessage(this.playersHand, true)}`;
+                return this;
             }
 
             if (command.toLowerCase() === 'hit') {
-                message = this.hit(this.playersHand);
+                const hit = this.hit(this.playersHand);
+                this.message = hit.message;
+                const sum = hit.sum;
+
+                if (sum === 21) {
+                    this.userPoints = PointsHelper.addPointsToUserPoints(this.wager * 10, this.userPoints);
+                    this.message = `${this.message}\nYou win ${this.wager * 10}\nYou now have ${this.userPoints.points} points.`;
+                } else if (sum > 21) {
+                    this.userPoints = PointsHelper.removePoints(this.wager, this.userPoints);
+                    this.message = `${this.message}\nYou win ${this.wager} points!\nYou now have ${this.userPoints.points} points.`;
+                }
             } else if (command.toLowerCase() === 'stay') {
-                const dealerSum = this.dealersTurn();
+                let message;
+                const returnedDealerSum = this.dealersTurn();
                 const userSum = this.sumCards(this.playersHand);
                 let isWinner = false;
 
                 message = `${this.createHandMessage(this.dealersHand, false)}${this.userPoints.username}'s Total: ${userSum}\n`;
-                if (dealerSum <= 21 && dealerSum > userSum) {
+                if (returnedDealerSum <= 21 && returnedDealerSum > userSum) {
                     message = `${message}You lost ${this.wager} points.\nYou now have ${this.userPoints.points - this.wager} points.`;
-                } else if (dealerSum === userSum) {
+                } else if (returnedDealerSum === userSum) {
                     message = `${message}It is a wash.`;
                 } else {
-                    message = `${message}You win ${this.wager} points.\n You now have ${this.userPoints.points + this.wager} points.`;
+                    message = `${message}You win ${this.wager} points.\n You now have ${Number(this.userPoints.points) + Number(this.wager)} points.`;
                     isWinner = true;
                 }
 
@@ -154,11 +163,12 @@ class BlackJack {
                     this.userPoints = PointsHelper.removePoints(this.wager, this.userPoints);
                 }
                 this.resetBlackjackGame();
-                console.log(JSON.stringify(this));
-                return { message: message, userPoints: this.userPoints };
+                this.message = message;
             } else {
-                return `You must either type "!blackjack hit" or "!blackjack stay".\n${this.createHandMessage(this.playersHand, true)}`;
+                this.message = `You must either type "!blackjack hit" or "!blackjack stay".\n${this.createHandMessage(this.playersHand, true)}`;
             }
+
+            return this;
         }
     }
 
@@ -181,7 +191,7 @@ class BlackJack {
             this.saveBlackjackToUser(this);
         }
 
-        return message;
+        return { message, sum };
     }
 
     sumCards(hand) {
@@ -195,7 +205,6 @@ class BlackJack {
         for (let card of hand) {
             if (Number.isNaN(Number(card.value))) {
                 card.value = Object.keys(faceCardsMap).find(key => faceCardsMap[key] === card.value);
-                console.log(card.value);
             }
         }
 
@@ -213,4 +222,4 @@ class BlackJack {
     }
 }
 
-module.exports = BlackJack;
+module.exports = BlackJack
