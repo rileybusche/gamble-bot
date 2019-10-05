@@ -3,6 +3,7 @@ const fs = require('fs');
 class FileHelper {
     static writeFile(jsonObject, filePath) {
         const fullFilePath = __dirname + filePath;
+        console.log(`Full Path: ${fullFilePath}`);
         const jsonString = JSON.stringify(jsonObject);
 
         fs.writeFile(fullFilePath, jsonString, (err) => {

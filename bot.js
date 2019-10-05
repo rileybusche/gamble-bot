@@ -163,7 +163,7 @@ client.on('message', msg => {
             }
         }
     } catch (error) {
-        FileHelper.writeFile(error, `./logs/error-${new Date().getTime().toString()}`)
+        FileHelper.writeFile(error, `/../logs/error-${new Date().getTime().toString()}`)
     }
 });
 
