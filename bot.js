@@ -162,8 +162,11 @@ client.on('message', msg => {
                 msg.channel.send(message);
             }
         }
-    } catch (error) {
-        FileHelper.writeFile(error, `/../logs/error-${new Date().getTime().toString()}`)
+    } catch (err) {
+        const date = new Date();
+        const timestamp = date.getTime().toString();
+        const formatteddatetime = date.toISOString();
+        FileHelper.writeFile({ message: err.message, time: formatteddatetime }, `/../logs/error-${timestamp}`)
     }
 });
 

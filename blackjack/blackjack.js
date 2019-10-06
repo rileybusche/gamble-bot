@@ -61,6 +61,7 @@ class BlackJack {
     saveBlackjackToUser(objectToSave) {
         const userPoints = this.userPoints;
         const filePath = `${blackjackFilePath}${userPoints.username}.json`;
+        console.log('save to blackjack user');
         FileHelper.writeFile(objectToSave, filePath);
     }
 
@@ -103,7 +104,8 @@ class BlackJack {
         let dealerSum = this.sumCards(this.dealersHand);
         if (dealerSum < 17) {
             while (dealerSum < 17) {
-                this.hit(this.dealersHand);
+                const newHand = this.hit(this.dealersHand);
+                dealerSum = newHand.sum;
             }
         }
         dealerSum = this.sumCards(this.dealersHand);
@@ -181,6 +183,7 @@ class BlackJack {
         const sum = this.sumCards(hand);
         let message = '';
         if (sum > 21) {
+            console.log(``)
             message = `${this.createHandMessage(hand, true)}\n${this.userPoints.username}, you have busted. Pussy.`;
             this.resetBlackjackGame();
         } else if (sum === 21) {
