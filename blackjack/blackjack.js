@@ -61,7 +61,6 @@ class BlackJack {
     saveBlackjackToUser(objectToSave) {
         const userPoints = this.userPoints;
         const filePath = `${blackjackFilePath}${userPoints.username}.json`;
-        console.log('save to blackjack user');
         FileHelper.writeFile(objectToSave, filePath);
     }
 

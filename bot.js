@@ -144,23 +144,23 @@ client.on('message', msg => {
                 }
             }
 
-            if (msg.content.startsWith("!blackjack")) {
-                const blackjack = new Blackjack(userPoints);
-                const command = msg.content.split(" ")[1];
-                let blackjackResults = blackjack.playBlackjack(command);
-                let message = blackjackResults.message;
-                userPoints = blackjackResults.userPoints;
-
-                if (userPoints !== undefined && userPoints !== null) {
-                    userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userPoints);
-                    FileHelper.writeFile(userPointsList, userPointsFilePath);
-                }
-
-                if (message === '' || message === null || message === undefined) {
-                    message = 'something';
-                }
-                msg.channel.send(message);
-            }
+            // if (msg.content.startsWith("!blackjack")) {
+            //     const blackjack = new Blackjack(userPoints);
+            //     const command = msg.content.split(" ")[1];
+            //     let blackjackResults = blackjack.playBlackjack(command);
+            //     let message = blackjackResults.message;
+            //     userPoints = blackjackResults.userPoints;
+            //
+            //     if (userPoints !== undefined && userPoints !== null) {
+            //         userPointsList = PointsHelper.updateUserPointsInUserPointsList(userPointsList, userPoints);
+            //         FileHelper.writeFile(userPointsList, userPointsFilePath);
+            //     }
+            //
+            //     if (message === '' || message === null || message === undefined) {
+            //         message = 'something';
+            //     }
+            //     msg.channel.send(message);
+            // }message
         }
     } catch (err) {
         const date = new Date();
