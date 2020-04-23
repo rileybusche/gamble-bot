@@ -6,8 +6,8 @@ class PointsHelper {
     static validateWager(wager, userPoints) {
         const isWagerAValidNumber = wager === undefined ? false : !Number.isNaN(Number(wager));
         let userHasFunds;
-
-        if (userPoints.points <= 0 || wager > userPoints.points) {
+        wager = Number(wager);
+        if (wager !== undefined && (userPoints.points <= 0 || wager > userPoints.points || wager <= 0)) {
             userHasFunds = false;
         } else {
             userHasFunds = true;
@@ -39,7 +39,7 @@ class PointsHelper {
     }
 
     static addPointsToUserPoints(pointsWon, userPoints) {
-        userPoints.points += pointsWon;
+        userPoints.points = Number(userPoints.points) + Number(pointsWon);
         return userPoints;
     }
 
@@ -57,7 +57,7 @@ class PointsHelper {
     }
 
     static findUserInUserPointsList(userPointsList, username) {
-        return userPointsList.filter(userPoints => userPoints.username === username)[0];
+        return userPointsList === null ? null : userPointsList.filter(userPoints => userPoints.username === username)[0];
     }
 
     static updateUserPointsInUserPointsList(userPointsList, userPoints) {
@@ -78,13 +78,15 @@ class PointsHelper {
 
     static giftPoints(msg, pointsToGive, userPointsToGiveTo, usernameToDeductFrom, userPointsList) {
         let message, sendMessage, userToDeductFrom;
-        if (Number.isNaN(pointsToGive)) {
-            message = `${pointsToGive} is not a valid number.\n`;
+        userToDeductFrom = this.findUserInUserPointsList(userPointsList, usernameToDeductFrom);
+        const validation = this.validateWager(pointsToGive, userToDeductFrom);
+        if (!validation.isValid) {
+            message = `${pointsToGive} is not a valid number. Make sure you have enough points and that you are giving more than 0.\n`;
             sendMessage = true;
         }
 
-        if (userPointsToGiveTo === null || userPointsToGiveTo === undefined) {
-            message = message !== undefined ? `${message}${userToGivePointsTo} is not a valid username.` : `${userToGivePointsTo} is not a valid username.`;
+        if (usernameToDeductFrom === userPointsToGiveTo.username) {
+            message = `${message !== undefined ? message : ''}You may not gift points to yourself.\n`;
             sendMessage = true;
         }
 
@@ -93,7 +95,7 @@ class PointsHelper {
         } else {
             userPointsToGiveTo = this.addPointsToUserPoints(pointsToGive, userPointsToGiveTo);
             userPointsList = this.updateUserPointsInUserPointsList(userPointsList, userPointsToGiveTo);
-            userToDeductFrom = this.findUserInUserPointsList(userPointsList, usernameToDeductFrom);
+
             userToDeductFrom = this.removePoints(pointsToGive, userToDeductFrom);
             userPointsList = this.updateUserPointsInUserPointsList(userPointsList, userToDeductFrom);
             FileHelper.writeFile(userPointsList, userPointsFilePath);

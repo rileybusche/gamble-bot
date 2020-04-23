@@ -1,0 +1,9 @@
+gamble-bot/
+logs/
+userPoints.json
+node_modules/
+.env
+auth.json
+.vscode/
+.gitattributes
+blackjack/blackjackUsers/*

@@ -3,6 +3,7 @@ const fs = require('fs');
 class FileHelper {
     static writeFile(jsonObject, filePath) {
         const fullFilePath = __dirname + filePath;
+        console.log(`Full Path: ${fullFilePath}`);
         const jsonString = JSON.stringify(jsonObject);
 
         fs.writeFile(fullFilePath, jsonString, (err) => {
@@ -18,10 +19,10 @@ class FileHelper {
 
     static readFile(filePath) {
         filePath = __dirname + filePath;
-
         try {
             return JSON.parse(fs.readFileSync(filePath, { encoding: 'utf-8' }));
         } catch (err) {
+            console.log(err.message);
             return null;
         }
     }

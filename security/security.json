@@ -1,0 +1,10 @@
+{
+    "PoshPrincess7": {
+        "!quit": true,
+        "!add-points": true,
+        "!avoid-being-cancelled": true
+    },
+    "Gaytor": {
+        "!safe-from-being-cancelled": true
+    }
+}
